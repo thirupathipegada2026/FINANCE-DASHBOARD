@@ -3,17 +3,350 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> FINANCE DASHBOARD </title>
+    <title>Finance Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="navdiv">
-            <div class="logo">< a href="#"> FINANCE DASHBOARD</a></div>
-            <ul>
-                <li>< a href=""
-                </li>
-            </ul>
+    <header>
+        <nav class="navbar">
+  <div class="logo">
+    <div class="logo-icon">FT</div>
+    <div class="logo-text">
+      <h2>FinTrack</h2>
+      <p>Finance Dashboard</p>
+    </div>
+  </div>
+
+  <ul class="nav-links">
+    <li><a href="#DASHBOARD">Dashboard</a></li>
+    <li><a href="#TRANSACTIONS">Transactions</a></li>
+    <li><a href="#ANALYTICS">Analytics</a></li>
+    <li><a href="#INSIGHTS">Insights</a></li>
+    <li><a href="#SETTINGS">Settings</a></li>
+  </ul>
+
+  <div class="user-controls">
+    <div class="theme-dropdown">
+      <button id="theme-dropdown-btn" class="theme-dropdown-btn">Theme</button>
+      <div id="theme-dropdown-menu" class="theme-dropdown-menu">
+        <button id="light-mode-btn" class="theme-option">Light Mode</button>
+        <button id="dark-mode-btn" class="theme-option">Dark Mode</button>
+      </div>
+    </div>
+    <div class="role-select">
+      <label for="user-role">Role:</label>
+      <select id="user-role">
+        <option value="user">User</option>
+        <option value="manager">Manager</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
+    <div class="profile">
+      <span id="profile-icon">👤</span>
+      <div id="profile-dropdown" class="profile-dropdown">
+        <a href="#PROFILE">Profile Name</a>
+        <a href="#ADDRESS">Address</a>
+        <a href="#ACCOUNT">Account Settings</a>
+        <a href="#BILLING">Billing Info</a>
+        <a href="#NOTIFICATIONS">Notifications</a>
+        <a href="#LOGOUT">Logout</a>
+      </div>
+    </div>
+  </div>
+</nav>
+    </header>
+    <main>
+        <section id="DASHBOARD">
+            <h2>Financial Summary</h2>
+            <div class="summary-cards">
+                <div class="card">
+                    <h3>Total Balance</h3>
+                    <p id="total-balance">$0.00</p>
+                </div>
+                <div class="card">
+                    <h3>Monthly Income</h3>
+                    <p id="monthly-income">$0.00</p>
+                </div>
+                <div class="card">
+                    <h3>Monthly Expenses</h3>
+                    <p id="monthly-expenses">$0.00</p>
+                </div>
+                <div class="card">
+                    <h3>Savings</h3>
+                    <p id="savings">$0.00</p>
+                </div>
+            </div>
+        </section>
+        <section id="TRANSACTIONS">
+            <h2>Transactions</h2>
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="period-filter">Period:</label>
+                    <select id="period-filter">
+                        <option value="current-month" selected>Current Month</option>
+                        <option value="past-month">Past Month</option>
+                        <option value="past-3-months">Past 3 Months</option>
+                        <option value="all">All Time</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="category-filter">Category:</label>
+                    <select id="category-filter">
+                        <option value="all">All Categories</option>
+                        <option value="food">Food</option>
+                        <option value="transport">Transport</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="utilities">Utilities</option>
+                        <option value="income">Income</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="type-filter">Type:</label>
+                    <select id="type-filter">
+                        <option value="all">All Types</option>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="date-from">From Date:</label>
+                    <input type="date" id="date-from">
+                </div>
+                <div class="filter-group">
+                    <label for="date-to">To Date:</label>
+                    <input type="date" id="date-to">
+                </div>
+                <div class="filter-group">
+                    <label for="amount-min">Min Amount:</label>
+                    <input type="number" id="amount-min" placeholder="0">
+                </div>
+                <div class="filter-group">
+                    <label for="amount-max">Max Amount:</label>
+                    <input type="number" id="amount-max" placeholder="10000">
+                </div>
+                <div class="export-buttons">
+                    <div class="pdf-export-group">
+                        <select id="pdf-month-filter">
+                            <option value="current-month">Current Month</option>
+                            <option value="last-month">Last Month</option>
+                            <option value="last-3-months">Last 3 Months</option>
+                            <option value="last-6-months">Last 6 Months</option>
+                            <option value="year-to-date">Year to Date</option>
+                            <option value="all">All Time</option>
+                        </select>
+                        <button id="download-pdf">📄 PDF</button>
+                    </div>
+                    <button id="download-csv">📊 CSV</button>
+                    <button id="download-json">📋 JSON</button>
+                    <div class="statement-dropdown">
+                        <button id="download-statement-btn">📥 Download Statement</button>
+                        <div id="statement-dropdown-menu" class="statement-dropdown-menu">
+                            <button id="statement-pdf">PDF</button>
+                            <button id="statement-csv">CSV</button>
+                            <button id="statement-json">JSON</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table id="transactions-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody id="transactions-body">
+                    <!-- Transactions will be populated here -->
+                </tbody>
+            </table>
+        </section>
+        <section id="ANALYTICS">
+            <h2>Analytics & Spending Overview</h2>
+            <div class="analytics-container">
+                <div class="charts-left">
+                    <h3>Spending Patterns</h3>
+                    <canvas id="spending-chart"></canvas>
+                    <h3>Financial Trends Over Time</h3>
+                    <canvas id="time-chart"></canvas>
+                </div>
+                <div class="charts-right">
+                    <h3>Spending by Category</h3>
+                    <canvas id="category-chart"></canvas>
+                </div>
+            </div>
+        </section>
+        <section id="INSIGHTS">
+            <h2>Financial Insights</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3>Highest Spending Category</h3>
+                    <p id="highest-category">Loading...</p>
+                    <p id="highest-amount">$0.00</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Monthly Comparison</h3>
+                    <div class="monthly-comp">
+                        <div class="month-data">
+                            <span class="month-label">Current Month</span>
+                            <span id="current-month-spending">$0.00</span>
+                        </div>
+                        <div class="month-data">
+                            <span class="month-label">Previous Month</span>
+                            <span id="previous-month-spending">$0.00</span>
+                        </div>
+                        <div class="comparison">
+                            <span id="spending-change">0%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="insight-card">
+                    <h3>Average Transaction</h3>
+                    <p id="avg-transaction">$0.00</p>
+                    <p class="subtitle">Per transaction</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Savings Rate</h3>
+                    <p id="savings-rate">0%</p>
+                    <p class="subtitle">Of total income</p>
+                </div>
+            </div>
+        </section>
+        <section id="PROFILE">
+            <h2>Profile Information</h2>
+            <div class="profile-info">
+                <div class="info-group">
+                    <label for="full-name">Full Name:</label>
+                    <input type="text" id="full-name" value="John Doe">
+                </div>
+                <div class="info-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" value="john.doe@example.com">
+                </div>
+                <div class="info-group">
+                    <label for="phone">Phone:</label>
+                    <input type="tel" id="phone" value="+1 (555) 123-4567">
+                </div>
+                <button id="save-profile">Save Changes</button>
+            </div>
+        </section>
+        <section id="ADDRESS">
+            <h2>Address Information</h2>
+            <div class="address-info">
+                <div class="info-group">
+                    <label for="street">Street Address:</label>
+                    <input type="text" id="street" value="123 Finance Street">
+                </div>
+                <div class="info-group">
+                    <label for="city">City:</label>
+                    <input type="text" id="city" value="Money City">
+                </div>
+                <div class="info-group">
+                    <label for="state">State:</label>
+                    <input type="text" id="state" value="CA">
+                </div>
+                <div class="info-group">
+                    <label for="zip">ZIP Code:</label>
+                    <input type="text" id="zip" value="90210">
+                </div>
+                <button id="save-address">Save Address</button>
+            </div>
+        </section>
+        <section id="ACCOUNT">
+            <h2>Account Settings</h2>
+            <div class="account-settings">
+                <div class="setting-group">
+                    <label for="currency">Preferred Currency:</label>
+                    <select id="currency">
+                        <option value="USD">USD ($)</option>
+                        <option value="EUR">EUR (€)</option>
+                        <option value="GBP">GBP (£)</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <input type="checkbox" id="two-factor" checked>
+                    <label for="two-factor">Enable Two-Factor Authentication</label>
+                </div>
+                <button id="save-settings">Save Settings</button>
+            </div>
+        </section>
+        <section id="BILLING">
+            <h2>Billing Information</h2>
+            <div class="billing-info">
+                <div class="info-group">
+                    <label for="card-number">Card Number:</label>
+                    <input type="text" id="card-number" value="**** **** **** 1234">
+                </div>
+                <div class="info-group">
+                    <label for="expiry">Expiry Date:</label>
+                    <input type="text" id="expiry" value="12/26">
+                </div>
+                <div class="info-group">
+                    <label for="cvv">CVV:</label>
+                    <input type="text" id="cvv" value="***">
+                </div>
+                <button id="update-billing">Update Billing</button>
+            </div>
+        </section>
+        <section id="NOTIFICATIONS">
+            <h2>Notification Preferences</h2>
+            <div class="notification-settings">
+                <div class="setting-group">
+                    <input type="checkbox" id="email-notifications" checked>
+                    <label for="email-notifications">Email Notifications</label>
+                </div>
+                <div class="setting-group">
+                    <input type="checkbox" id="sms-notifications">
+                    <label for="sms-notifications">SMS Notifications</label>
+                </div>
+                <div class="setting-group">
+                    <input type="checkbox" id="push-notifications" checked>
+                    <label for="push-notifications">Push Notifications</label>
+                </div>
+                <div class="setting-group">
+                    <input type="checkbox" id="weekly-report" checked>
+                    <label for="weekly-report">Weekly Financial Report</label>
+                </div>
+                <button id="save-notifications">Save Preferences</button>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>FinTrack</h3>
+                <p>Your trusted finance management dashboard</p>
+            </div>
+            <div class="footer-section">
+                <h4>Designed & Developed</h4>
+                <p>Built with modern web technologies</p>
+                <p>Responsive design for all devices</p>
+            </div>
+            <div class="footer-section">
+                <h4>Related Links</h4>
+                <ul>
+                    <li><a href="#DASHBOARD">Dashboard</a></li>
+                    <li><a href="#TRANSACTIONS">Transactions</a></li>
+                    <li><a href="#ANALYTICS">Analytics</a></li>
+                    <li><a href="#PROFILE">Profile</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p>Email: support@gmail.com</p>
+                <p>Phone: +91 846*******</p>
+                <p>Address:  HYDERABAD, 500083</p>
+            </div>
         </div>
-    </nav>
+        <div class="footer-bottom">
+            <p>&copy; 2026 . All rights reserved. Made with ❤️ THIRUPATHIPEGADA.</p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
 </body>
 </html>
